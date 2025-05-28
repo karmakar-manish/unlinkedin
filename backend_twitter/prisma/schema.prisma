@@ -1,0 +1,146 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
+// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model UserSchema {
+  id             Int      @id @default(autoincrement())
+  name           String
+  username       String   @unique
+  email          String   @unique
+  password       String
+  profilePicture String   @default("")
+  bannerImg      String   @default("")
+  headline       String   @default("Linkedin User")
+  location       String   @default("Earth")
+  about          String   @default("")
+  skills         String[] @default([])
+
+  experience Experience[]
+  education  Education[]
+
+  //connection field(many-to-many self-relation)
+  connections   UserSchema[] @relation("UserConnections") //this user is connected to
+  connectedWith UserSchema[] @relation("UserConnections") //users who are connected to this user
+
+  posts      PostSchema[] @relation("AuthorPosts")
+  comments   Comment[]    @relation("UserComments")
+  likedPosts PostLikes[]  @relation("UserLikedPosts")
+
+  recipientNotification   Notifications[] @relation("NotificationRecipient")
+  relatedUserNotification Notifications[] @relation("NotificationRelatedUser")
+
+  sentRequests     connectionRequest[] @relation("SentRequests")
+  receivedRequests connectionRequest[] @relation("ReceivedRequests")
+}
+
+model Experience {
+  id          Int        @id @default(autoincrement())
+  title       String
+  company     String
+  startDate   DateTime
+  endDate     DateTime
+  description String
+  userId      Int
+  User        UserSchema @relation(fields: [userId], references: [id])
+}
+
+model Education {
+  id           Int        @id @default(autoincrement())
+  school       String
+  fieldOfStudy String
+  startYear    Int
+  endYear      Int
+  userId       Int
+  User         UserSchema @relation(fields: [userId], references: [id])
+}
+
+model PostSchema {
+  id        Int        @id @default(autoincrement())
+  authorId  Int
+  Author    UserSchema @relation("AuthorPosts", fields: [authorId], references: [id])
+  content   String
+  image     String?
+  createdAt DateTime   @default(now())
+  updatedAt DateTime   @updatedAt
+
+  comments Comment[]
+  likes    PostLikes[]
+
+  notifications Notifications[]
+}
+
+model Comment {
+  id        Int      @id @default(autoincrement())
+  content   String
+  createdAt DateTime @default(now())
+  userId    Int
+  postId    Int
+
+  User UserSchema @relation("UserComments", fields: [userId], references: [id])
+  Post PostSchema @relation(fields: [postId], references: [id])
+}
+
+model PostLikes {
+  id     Int @id @default(autoincrement())
+  userId Int //which user liked it
+  postId Int //which post the user liked
+
+  User UserSchema @relation("UserLikedPosts", fields: [userId], references: [id])
+  Post PostSchema @relation(fields: [postId], references: [id])
+
+  //an user can like a post only once
+  @@unique([userId, postId])
+}
+
+enum NotificationType {
+  like
+  comment
+  connectionAccepted
+}
+
+model Notifications {
+  id          Int        @id @default(autoincrement())
+  recipientId Int
+  Recipient   UserSchema @relation("NotificationRecipient", fields: [recipientId], references: [id])
+
+  type NotificationType
+
+  relatedUserId Int?
+  RelatedUser   UserSchema? @relation("NotificationRelatedUser", fields: [relatedUserId], references: [id])
+
+  relatedPostId Int?
+  Post          PostSchema? @relation(fields: [relatedPostId], references: [id])
+
+  read Boolean @default(false)
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+enum ConnectionStatus {
+  pending
+  accepted
+  rejected
+}
+
+model connectionRequest {
+  id         Int              @id @default(autoincrement())
+  senderId   Int
+  receiverId Int
+  status     ConnectionStatus @default(pending)
+  createdAt  DateTime         @default(now())
+
+  sender    UserSchema @relation("SentRequests", fields: [senderId], references: [id])
+  recipient UserSchema @relation("ReceivedRequests", fields: [receiverId], references: [id])
+}

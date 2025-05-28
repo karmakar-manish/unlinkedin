@@ -1,0 +1,58 @@
+/**
+ * For more details on how to configure Wrangler, refer to:
+ * https://developers.cloudflare.com/workers/wrangler/configuration/
+ */
+{
+	"$schema": "node_modules/wrangler/config-schema.json",
+	"name": "backend",
+	"main": "src/index.ts",
+	"compatibility_date": "2025-05-14",
+	"observability": {
+		"enabled": true
+	},
+	"vars": {
+		"DATABASE_URL":"prisma://accelerate.prisma-data.net/?api_key=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJhcGlfa2V5IjoiOGFmYzJkYzMtYWI3Yi00NjFhLWI2NDgtNmMwMzU0ZGM1ZTQ3IiwidGVuYW50X2lkIjoiZjkzMjMyMjczZWRhYjU1ZDQyZmYzNDE5YmJmMWJjMTk3OWViOTMxMmY0ZDQ2ODNjNGZhMGUyNzM1ODVhOTljMyIsImludGVybmFsX3NlY3JldCI6IjgxYTkzNjQzLWQ5YjEtNDEyNi04MjBlLWExZGVlMDI1M2M4MiJ9.kTP5fWP2HlTG8wvoGQW8Tt5OMHrsedK01GWC6Dlvyqw",
+		"JWT_SECRET": "manishSECRET",
+		"MAILTRAP_TOKEN": "b438e1c2df10579bb1a20d0cd39fbd2d",
+		"EMAIL_FROM": "hello@demomailtrap.co",
+		"EMAIL_FROM_NAME": "Mailtrap Test",
+		"CLIENT_URL": "http://localhost:5173",
+		"CLOUDINARY_API_KEY": "422251619787643",
+		"CLOUDINARY_API_SECRET": "rOC-pi8ySFhzr75DsoaUagiOokI",
+		"CLOUDINARY_CLOUD_NAME": "dgnv2vpwd"
+	}
+	/**
+	 * Smart Placement
+	 * Docs: https://developers.cloudflare.com/workers/configuration/smart-placement/#smart-placement
+	 */
+	// "placement": { "mode": "smart" },
+
+	/**
+	 * Bindings
+	 * Bindings allow your Worker to interact with resources on the Cloudflare Developer Platform, including
+	 * databases, object storage, AI inference, real-time communication and more.
+	 * https://developers.cloudflare.com/workers/runtime-apis/bindings/
+	 */
+
+	/**
+	 * Environment Variables
+	 * https://developers.cloudflare.com/workers/wrangler/configuration/#environment-variables
+	 */
+	// "vars": { "MY_VARIABLE": "production_value" },
+	/**
+	 * Note: Use secrets to store sensitive data.
+	 * https://developers.cloudflare.com/workers/configuration/secrets/
+	 */
+
+	/**
+	 * Static Assets
+	 * https://developers.cloudflare.com/workers/static-assets/binding/
+	 */
+	// "assets": { "directory": "./public/", "binding": "ASSETS" },
+
+	/**
+	 * Service Bindings (communicate between multiple Workers)
+	 * https://developers.cloudflare.com/workers/wrangler/configuration/#service-bindings
+	 */
+	// "services": [{ "binding": "MY_SERVICE", "service": "my-service" }]
+}

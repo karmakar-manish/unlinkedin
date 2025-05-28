@@ -1,0 +1,57 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
+// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
+
+generator client {
+  provider = "prisma-client-js"
+  output   = "../src/generated/prisma"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model userSchema {
+  id             Int      @id @default(autoincrement())
+  name           String
+  username       String   @unique
+  email          String   @unique
+  password       String
+  profilePicture String   @default("")
+  bannerImg      String   @default("")
+  headline       String   @default("Linkedin User")
+  location       String   @default("Earth")
+  about          String   @default("")
+  skills         String[] @default([])
+
+  experience Experience[]
+  education  Education[]
+
+  //connection field(many-to-many self-relation)
+  connections   userSchema[] @relation("UserConnections") //this user is connected to
+  connectedWith userSchema[] @relation("UserConnections") //users who are connected to this user
+}
+
+model Experience {
+  id          Int        @id @default(autoincrement())
+  title       String
+  company     String
+  startDate   DateTime
+  endDate     DateTime
+  description String
+  userId      Int
+  User        userSchema @relation(fields: [userId], references: [id])
+}
+
+model Education {
+  id           Int        @id @default(autoincrement())
+  school       String
+  fieldOfStudy String
+  startYear    Int
+  endYear      Int
+  userId       Int
+  User         userSchema @relation(fields: [userId], references: [id])
+}
