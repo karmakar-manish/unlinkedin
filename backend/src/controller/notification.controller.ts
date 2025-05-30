@@ -31,6 +31,7 @@ export async function getUserNotifications(req:any, res:any){
                 createdAt: 'desc'
             }
         })
+        return res.json(notifications)
     }catch(err)
     {
         console.log("Error in getUserNotification controller: ", err);

@@ -2,6 +2,7 @@ import { Link } from "react-router-dom";
 import SignUPForm from "../../components/auth/SignUPForm";
 
 export default function SignUpPage(){
+
     return <div className="min-h-screen flex flex-col justify-center py-12 sm:px-6 lg:px-8">
         <div className=" sm:mx-auto sm:w-full sm:max-w-md">
             <img className=" mx-auto w-auto h-36" src="/logo.svg" alt="UnlinkedIn"/>
@@ -11,7 +12,9 @@ export default function SignUpPage(){
         </div> 
         <div className="mt-8 sm:mx-auto sm:w-sm sm:max-w-xl shadow-md">
             <div className="bg-white py-8 px-4 shadow sm:rounded-lg sm:px-10">
-                {/* <SignUPForm/> */}
+                
+                <SignUPForm/>   
+                
                 <div className="mt-6">
                     <div className="relative">
                         <div className="absolute inset-0 flex items-center">

@@ -39,7 +39,7 @@ export async function signup(req:any, res:any)
 
         //check password length
         if(password.length < 6)
-            return res.json({message: "Password must be atleast 6 characters"})
+            return res.status(400).json({message: "Password must be atleast 6 characters"})
 
         //hash the password before storing
         const salt = await bcrypt.genSalt(10)
@@ -56,10 +56,10 @@ export async function signup(req:any, res:any)
         })
 
         const JWT_SECRET = process.env.JWT_SECRET || ""
-
+        
         //create a token now
         const token = jwt.sign({id: user?.id}, JWT_SECRET, {expiresIn: "3d"})
-
+        
         //create a cookie
         res.cookie("token", token,{
             httpOnly: true, //cannot access with javascript (prevent XSS attack)
@@ -84,7 +84,7 @@ export async function signup(req:any, res:any)
         }
 
 
-        return res.json({
+        return res.status(200).json({
             message: "User registered successfully!",
             token: token
         })

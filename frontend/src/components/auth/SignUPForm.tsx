@@ -1,8 +1,8 @@
 import { useState } from "react"
 import TextInputComponent from "../TextInputComponent"
-import { useMutation } from "@tanstack/react-query"
+import { useMutation, useQueryClient } from "@tanstack/react-query"
 import { axiosInstance } from "../../lib/axios"
-import { toast } from "react-hot-toast"
+import { toast } from "react-toastify"
 import {Loader} from "lucide-react"
 
 export default function SignUPForm(){
@@ -10,7 +10,10 @@ export default function SignUPForm(){
     const [email, setEmail] = useState("")
     const [username, setUsername] = useState("")
     const [password, setPassword] = useState("")
-    
+
+    //for interacting with the query cache
+    const queryClient = useQueryClient()
+
     //react query
     const {mutate: signUpMutation, isPending} = useMutation({
         mutationFn: async(data: {name: string, email: string, username: string, password:string}) => {
@@ -19,9 +22,11 @@ export default function SignUPForm(){
         },
         onSuccess: () => {
             toast.success("Account created successfully!")
+            //re-fetch the data
+            queryClient.invalidateQueries({queryKey: ["authUser"]})
         },
-        onError: ()=>{
-            toast.error("Something went wrong!")
+        onError: (err: any)=>{
+            toast.error(err.response.data.message || "Something went wrong!")
         }
     })
     async function handleSignup(e: any){

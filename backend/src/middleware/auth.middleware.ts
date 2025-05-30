@@ -3,28 +3,6 @@ import { PrismaClient } from "@prisma/client";
 import { Request, Response, NextFunction } from "express";
 const prisma = new PrismaClient();
 
-interface CustomUser{
-    id: number,
-    name: string,
-    username: string,
-    email: string,
-    password: string,
-    profilePicture: string,
-    bannerImg: string,
-    headline: string,
-    about: string,
-    skills: string[]
-}
-
-// Extend Express.Request to include `user`
-declare global {
-  namespace Express {
-    interface Request {
-      user?: CustomUser;
-    }
-  }
-}
-
 
 async function protectRoute(req: any,res: any,next:any) 
 {
@@ -65,8 +43,7 @@ async function protectRoute(req: any,res: any,next:any)
 function getCurrentUser(req: any, res: any)
 {
     try{
-        const user = req.user
-        return res.json(user)
+        return res.json(req.user)
 
     }catch(err)
     {

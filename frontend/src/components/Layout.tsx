@@ -3,7 +3,7 @@ import Navbar from "./Navbar";
 
 export default function Layout(){
     const location = useLocation()
-
+    
     return <div className="min-h-screen bg-gray-100">
         <Navbar/>
 
