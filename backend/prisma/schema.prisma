@@ -67,8 +67,10 @@ model Education {
 
 model PostSchema {
   id        Int        @id @default(autoincrement())
+  
   authorId  Int
   Author    UserSchema @relation("AuthorPosts", fields: [authorId], references: [id])
+
   content   String
   image     String?
   createdAt DateTime   @default(now())
@@ -133,6 +135,7 @@ enum ConnectionStatus {
   accepted
   rejected
 }
+
 
 model connectionRequest {
   id         Int              @id @default(autoincrement())

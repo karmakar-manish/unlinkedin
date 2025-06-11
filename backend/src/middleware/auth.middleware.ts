@@ -19,6 +19,16 @@ async function protectRoute(req: any,res: any,next:any)
         const user = await prisma.userSchema.findFirst({
             where: {
                 id: decoded.id
+            },
+            include: {
+                connections: {
+                    select: {
+                        id: true,
+                        username: true,
+                        profilePicture: true,
+                        headline: true
+                    }
+                }
             }
         })
 

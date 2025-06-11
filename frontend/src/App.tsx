@@ -1,33 +1,19 @@
 import './App.css'
 import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom'
-import Layout from './components/Layout'
+import Layout from './components/layout/Layout'
 import SignUpPage from './pages/auth/SignUpPage'
 import Homepage from './pages/Homepage'
 import LoginPage from './pages/auth/LoginPage'
-import { toast, ToastContainer } from 'react-toastify'
-import { useQuery } from '@tanstack/react-query'
-import { axiosInstance } from './lib/axios'
+import { ToastContainer } from 'react-toastify'
+import { useAuthUserHook } from './hooks/useAuthUserHook'
+import NotificationPage from './pages/auth/NotificationPage'
+import NetworkPage from './pages/auth/NetworkPage'
 
 function App() {
 
   //get the User from the "/auth/me" route of middleware
-  const {data: authUser, isLoading} = useQuery({
-    queryKey: ["authUser"],
-    queryFn: async()=>{
-      try{
-        const res = await axiosInstance.get("/auth/me")
-        return res.data
-      }catch(err: any)
-      {
-        //for preventing the popup for the first time
-        if(err.response && err.response.status === 401)
-          return null;
-        toast.error(err.response.data.message || "Something went wrong")
-      }
-    }
-  })
+  const {data: authUser, isLoading} = useAuthUserHook()
 
-  console.log("Auth user from App.tsx: ",authUser)
   //for showing the loading screen
   if(isLoading)
   {
@@ -40,9 +26,11 @@ function App() {
     <BrowserRouter>
       <Routes>
         <Route element={<Layout/>}>
-          <Route path='/' element={authUser?<Homepage/>: <Navigate to={"/signup"}/>}/>
+          <Route path='/' element={authUser?<Homepage/>: <Navigate to={"/login"}/>}/>
           <Route path='/signup' element={!authUser ? <SignUpPage/>: <Navigate to={"/"}/>}/>
           <Route path='/login' element={!authUser ? <LoginPage/>: <Navigate to={"/"}/>}/>
+          <Route path='/notifications' element={authUser ? <NotificationPage/>: <Navigate to={"/login"}/>}/>
+          <Route path='/network' element={authUser ? <NetworkPage/> : <Navigate to={"/login"}/>}/>
         </Route>
       </Routes>
         <ToastContainer position="top-right" autoClose={3000} />

@@ -27,7 +27,6 @@ app.use("/api/v1/users", userRoutes)
 app.use("/api/v1/post", postRoutes)
 app.use("/api/v1/connections", connectionRoutes)
 app.use("/api/v1/notifications", notificationRoutes)
-app.use("/api/v1/connections", connectionRoutes)
 
 app.listen(port, ()=>{
     console.log(`Server is listening on port ${port}`);

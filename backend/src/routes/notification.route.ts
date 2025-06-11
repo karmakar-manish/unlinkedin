@@ -6,6 +6,6 @@ const router = express.Router()
 
 router.get("/", protectRoute, getUserNotifications)
 router.put("/:id/read", protectRoute, markNotification)
-router.get("/:id", protectRoute, deleteNotification)
+router.put("/:id", protectRoute, deleteNotification)
 
 export default router

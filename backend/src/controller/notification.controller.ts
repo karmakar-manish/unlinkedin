@@ -42,7 +42,7 @@ export async function getUserNotifications(req:any, res:any){
 export async function markNotification(req: any, res: any){
     const userId = req.user?.id  //set by the middleware
    
-    const notificationId = Number(req.params) //from the parameter
+    const notificationId = Number(req.params.id) //from the parameter
 
     try{
         const notifications = await client.notifications.updateMany({
@@ -69,7 +69,7 @@ export async function markNotification(req: any, res: any){
 export async function deleteNotification(req: any, res: any){
     const user = req.user  //set by the middleware
    
-    const notificationId = Number(req.params)
+    const notificationId = Number(req.params.id)
 
     try{
         await client.notifications.deleteMany({

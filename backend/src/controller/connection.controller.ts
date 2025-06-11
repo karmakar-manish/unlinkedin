@@ -1,19 +1,17 @@
 import { sendConnectionAcceptedEmail } from "../emails/emailHandlers";
 import { PrismaClient } from "@prisma/client";
-import { NextFunction, Response, Request } from "express";
 
 const client = new PrismaClient()
 
 
-export async function sendConnectionRequest(req:any, res:any, next:any)
+export async function sendConnectionRequest(req:any, res:any)
 {
 
     //to whom the request is sent
-    const {receiverId} = req.params //got from the params
-    
+    const receiverId = Number(req.params.userId) //got from the params
     const senderId = req.user?.id   //set by the middleware
 
-    if(senderId?.toString() === receiverId)
+    if(senderId === receiverId)
         return res.status(400).json({message: "You can't send request to yourself!"})
 
     
@@ -67,9 +65,10 @@ export async function sendConnectionRequest(req:any, res:any, next:any)
 }
 
 
-export async function acceptConnectionRequest(req:any, res:any, next: any)
+export async function acceptConnectionRequest(req:any, res:any)
 {
-    const requestId = Number(req.params)
+    const requestId = Number(req.params.requestId)
+    console.log("Request id: ", requestId)
     const recipientId = req.user?.id    //i am receiving the request
 
     try{
@@ -173,7 +172,7 @@ export async function acceptConnectionRequest(req:any, res:any, next: any)
 
 export async function rejectConnectionRequest(req:any, res:any, next:any)
 {
-    const requestId = Number(req.params)
+    const requestId = Number(req.params.requestId)
     const userId = req.user?.id
 
     try{
@@ -207,9 +206,8 @@ export async function rejectConnectionRequest(req:any, res:any, next:any)
 }
 
 //get all connection request for the current user
-export async function getConnectionRequests(req:any, res:any, next:any)
+export async function getConnectionRequests(req:any, res:any)
 {
-
     try{
         const userId = req.user?.id
 
@@ -217,7 +215,7 @@ export async function getConnectionRequests(req:any, res:any, next:any)
             where: {
                 AND: [
                     {receiverId: userId},
-                    {status: "pending"}
+                    {status : "pending"}
                 ]
             }, 
             include: {
@@ -232,7 +230,6 @@ export async function getConnectionRequests(req:any, res:any, next:any)
                 }
             }
         })
-
         return res.json(request)
 
     }catch(err)
@@ -310,8 +307,9 @@ export async function removeConnection(req:any, res:any, next: any)
 export async function getConnectionStatus(req:any, res:any, next: any)
 {
 
-    const targetUserId = Number(req.params)
+    const targetUserId = Number(req.params.userId)
     const currentUserId = req.user?.id
+
 
     try{
         //1. Check if the user is already connected
@@ -333,10 +331,12 @@ export async function getConnectionStatus(req:any, res:any, next: any)
         const pendingRequest = await client.connectionRequest.findFirst({
             where: {
                 status: "pending",
-                OR: [
-                    {senderId: currentUserId, receiverId: targetUserId},
-                    {senderId: targetUserId, receiverId: currentUserId}
-                ]
+                AND: {
+                    OR: [
+                        {senderId: currentUserId, receiverId: targetUserId},
+                        {senderId: targetUserId, receiverId: currentUserId}
+                    ]
+                }
             }
         })
 
@@ -352,7 +352,7 @@ export async function getConnectionStatus(req:any, res:any, next: any)
         }
 
         //3. No connection or request
-        return res.json({status: "Not connected"})
+        return res.json({status: "not_connected"})
 
     }catch(err)
     {

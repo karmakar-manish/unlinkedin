@@ -2,9 +2,9 @@ import { Link } from "react-router-dom";
 import LoginForm from "../../components/auth/LoginForm";
 
 export default function LoginPage(){
-    return <div className="min-h-screen flex flex-col justify-center py-12 sm:px-6 lg:px-8">
+    return <div className="min-h-screen flex flex-col justify-center  sm:px-2 lg:px-8 ">
         <div className=" sm:mx-auto sm:w-full sm:max-w-md">
-            <img className=" mx-auto w-auto h-36" src="/logo.svg" alt="UnlinkedIn"/>
+            <img className=" mx-auto w-auto h-30 " src="/logo.svg" alt="UnlinkedIn"/>
             <h2 className="text-center text-3xl font-extrabold text-gray-900">
                 Sign in to your account
             </h2>

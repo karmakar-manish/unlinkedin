@@ -25,8 +25,6 @@ export async function getSuggestedConnections(req:any, res: any)
         // ensures that connectedUserIds will be an empty array []
         const connectedUserIds = currentUser?.connections.map((conn: {id: number})  => conn.id) || []
 
-        console.log("Connected user ids : ", connectedUserIds);
-
         //find users who are not connected, and also donot show our own profile
         const suggestedUsers = await client.userSchema.findMany({
             where: {
@@ -35,6 +33,7 @@ export async function getSuggestedConnections(req:any, res: any)
                 }
             }, 
             select: {
+                id: true,
                 name: true,
                 username: true,
                 profilePicture: true,

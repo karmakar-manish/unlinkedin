@@ -13,11 +13,14 @@ export async function getFeedPosts(req: any, res:any)
         const user = req.user  //set by the middleware
         const connections = user.connections    //array of connections
         
+        //put all the connection ids in the new array
+        const connectionIds = connections.map((conn: {id: number})=>conn.id)
+
         //find the posts of the connected users
 
         const post = await client.postSchema.findMany({
             where: {
-                authorId: {in: connections}
+                authorId: {in: [...connectionIds, user.id]}
             },
             include: {
                 Author: {
@@ -36,6 +39,11 @@ export async function getFeedPosts(req: any, res:any)
                                 profilePicture: true
                             }
                         }
+                    }
+                },
+                likes: {
+                    select: {
+                        id: true
                     }
                 }
             }, 
@@ -60,7 +68,9 @@ export async function createPost(req:any, res:any)
     const user = req.user  //get the user details set by middleware
 
     //get the content and image from the body
-    const {content, image} = req.body;
+    const content = req.body.content;
+    
+    const image = req.file  //multer puts the binary file in req.file
 
     try{
 
@@ -69,7 +79,11 @@ export async function createPost(req:any, res:any)
         //incase user has sent an image, upload and get the image url
         if(image)
         {
-            const imgResult = await cloudinary.uploader.upload(image)
+            //cloudinary expects a base64 string representation of that file.
+            const base64 = `data:${image.mimetype};base64,${image.buffer.toString("base64")}`
+
+            const imgResult = await cloudinary.uploader.upload(base64)
+
             imageUrl = imgResult.secure_url;
         }   
         
@@ -172,8 +186,8 @@ export async function getPostById(req:any, res:any)
                 }
             }
         })
-
         return res.json(post) //return the post   
+
     }catch(err)
     {
         console.log("Error in getPostById controller");
@@ -185,7 +199,7 @@ export async function getPostById(req:any, res:any)
 export async function createComment(req:any, res:any)
 {
     
-    const body = req.body
+    const content = req.body.content    //the comment sent in the body
     const postId = req.params.id    //the post id
     const user = req.user  //set by the middleware
 
@@ -193,7 +207,7 @@ export async function createComment(req:any, res:any)
         //create the comment
         const comment = await client.comment.create({
             data: {
-                content: body.content,
+                content: content,
                 userId: user.id,
                 postId: Number(postId)
             }
@@ -237,7 +251,7 @@ export async function createComment(req:any, res:any)
                     recipientName: post?.Author.name!, 
                     commenterName: user.name, 
                     postUrl: postUrl, 
-                    commentContent: body.content})
+                    commentContent: content})
             }catch(err)
             {
                 console.log("Error in sending comment notification email: ", err);
@@ -252,10 +266,40 @@ export async function createComment(req:any, res:any)
     }
 }
 
+//route to get all the comments of the given post
+export async function getComments(req:any, res:any)
+{
+    const postId = req.params.id    //get the postId from the params
+   
+    try{
+        const postComments = await client.comment.findMany({
+            where: {
+                postId: Number(postId)
+            },
+            include:{
+                User:{
+                    select: {
+                        name: true,
+                        username: true,
+                        profilePicture: true,
+                        headline: true
+                    }
+                }
+            },
+            orderBy: {createdAt: 'desc'}
+        })
+        
+        return res.json(postComments)
+
+    }catch(err){
+        console.log("Error in getComments controller");
+        return res.status(500).json({message:"Server Error"})
+    }
+}
+
 export async function likePost(req:any, res:any) {
     const postId = req.params.id
     const userId = req.user.id
-    const body = req.body
     
     try{
         //find if the user has already liked the post
@@ -268,7 +312,7 @@ export async function likePost(req:any, res:any) {
             }
         })
 
-        //incase the user has already liked the post, dislike it
+        //incase the user has already liked the post, "unlike" it
         if(existingLike)
         {
             await client.postLikes.delete({

@@ -1,12 +1,12 @@
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query"
-import { axiosInstance } from "../lib/axios"
+import { axiosInstance } from "../../lib/axios"
 import { Link } from "react-router-dom"
-import { Bell, Home, LogIn, LogOut, User, UserPlus, Users } from "lucide-react"
+import { Bell, Home, LogOut, User, Users } from "lucide-react"
+import { useAuthUserHook } from "../../hooks/useAuthUserHook"
 
 export default function Navbar(){
     //getting the authUser data from the cache
-    const {data: authUser} = useQuery({queryKey: ["authUser"]})
-    console.log("authUser: " , authUser)
+    const {data: authUser} = useAuthUserHook()
 
     const queryClient = useQueryClient()    //manually interact with the query cache   
 
@@ -24,7 +24,7 @@ export default function Navbar(){
     const {data: connectionRequests} = useQuery({
         queryKey: ["connectionRequests"],
         queryFn: async()=>{
-            const res = await axiosInstance.get("/connections")
+            const res = await axiosInstance.get("/connections/requests")
             return res.data
         },
         enabled: !!authUser //only call if we have authenticated user
@@ -41,13 +41,10 @@ export default function Navbar(){
     })
 
     //get the count of all unread notifications
-    const unreadNotificationCount = notifications?.filter((notif: any) => !notif.read).length
-    console.log("unreadCount : ", unreadNotificationCount)
+    const unreadNotificationCount = Array.isArray(notifications)?notifications.filter((notif: any) => !notif.read).length:0
 
     //get the connection request count
     const unreadConnectionRequestsCount = connectionRequests?.length 
-    console.log("unread connection count : ", unreadConnectionRequestsCount)
-
 
     return <div className="bg-blue-100 shadow-md sticky top-0 z-50">
         <div className="max-w-7xl mx-auto px-4">
@@ -97,12 +94,10 @@ export default function Navbar(){
                         </>
                     ): (
                         <>
-                            <Link to={"/login"} className="text-sm text-gray-600 hover:text-blue-600 transition flex flex-col items-center">
-                                <LogIn size={20}/>
+                            <Link to={"/login"} className="text-sm text-gray-700 hover:text-gray-900 flex flex-col items-center rounded p-2 ">
                                 Sign In
                             </Link>
-                            <Link to={"/signup"} className="text-sm text-gray-600 hover:text-blue-600 transition flex flex-col items-center">
-                                <UserPlus size={20}/>
+                            <Link to={"/signup"} className="text-xs font-sans text-white bg-blue-600 hover:bg-blue-700 p-2 rounded flex flex-col items-center">
                                 Join now
                             </Link>
                         </>
