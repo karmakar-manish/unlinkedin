@@ -1,6 +1,6 @@
 import { useMutation, useQueryClient } from "@tanstack/react-query"
 import type { PostType } from "../types"
-import { useState } from "react"
+import { useMemo, useState } from "react"
 import { axiosInstance } from "../lib/axios"
 import { toast } from "react-toastify"
 import { Link } from "react-router-dom"
@@ -8,7 +8,7 @@ import { Loader, MessageCircle, Send, Share2, ThumbsUp, Trash2 } from "lucide-re
 import PostAction from "./PostAction"
 import { useAuthUserHook } from "../hooks/useAuthUserHook"
 
-import {formatDistanceToNow} from "date-fns"
+import { formatDistanceToNow} from "date-fns"
 import { useGetPostCommentHook } from "../hooks/useGetPostCommentHook"
 
 interface PostProps{
@@ -30,10 +30,24 @@ export default function Post({post}: PostProps)
     const queryClient = useQueryClient()
 
     //check if the current user is the owner of the post
-    const isOwner = authUser?.user?.id === post.Author?.authorId
+    const isOwner = useMemo(()=>{
+        console.log("Authuser: ", authUser?.id)
+        console.log("Post: ", post.Author?.id)
 
+        return Number(authUser?.id) === Number(post.Author?.id)
+    }, [authUser?.id, post.Author?.id])
+
+    console.log("Owner : ", isOwner)
     //check if the user has already liked the post
-    const isLiked = post.likes?.some(like => like.userId === authUser?.user?.id)
+    const isLiked = useMemo(() => {
+        // if(!post.likes) return false 
+        let liked=false;
+        post.likes.some(like => {
+
+            liked = liked || Number(like.userId) == Number(authUser?.id)
+        })
+        return liked 
+    }, [post.likes])
 
     //mutation to delete a post
     const {mutate: deletePost, isPending: isDeletingPost} = useMutation({
@@ -57,6 +71,7 @@ export default function Post({post}: PostProps)
         },
         onSuccess: ()=>{
             queryClient.invalidateQueries({queryKey: ["feedPosts"]})    //re-fetch the cache
+            queryClient.invalidateQueries({queryKey: ["post", post.id]})
             toast.success("Comment created successfully")
         }, 
         onError: (err: any)=>{
@@ -72,6 +87,7 @@ export default function Post({post}: PostProps)
         },
         onSuccess: ()=>{
             queryClient.invalidateQueries({queryKey: ["feedPosts"]})    //re-fetch the cache
+            queryClient.invalidateQueries({queryKey: ["post", post.id]})
         }
     })
 

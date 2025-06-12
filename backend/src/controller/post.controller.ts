@@ -25,6 +25,7 @@ export async function getFeedPosts(req: any, res:any)
             include: {
                 Author: {
                     select: {
+                        id: true,
                         name: true,
                         username: true,
                         profilePicture: true,
@@ -43,7 +44,8 @@ export async function getFeedPosts(req: any, res:any)
                 },
                 likes: {
                     select: {
-                        id: true
+                        id: true,
+                        userId: true
                     }
                 }
             }, 
@@ -156,8 +158,8 @@ export async function deletePost(req: any, res: any)
 
 export async function getPostById(req:any, res:any)
 {
-    const postId = req.params.id    //get the id from the params
-
+    const postId = Number(req.params.id)    //get the id from the params
+ 
     try{
         const post = await client.postSchema.findFirst({
             where: {
@@ -166,6 +168,7 @@ export async function getPostById(req:any, res:any)
             include: {
                 Author: {
                     select: {
+                        id: true,
                         name: true,
                         username: true,
                         profilePicture: true,
@@ -182,6 +185,12 @@ export async function getPostById(req:any, res:any)
                                 headline: true
                             }
                         }
+                    }
+                },
+                likes: {
+                    select: {
+                        id: true,
+                        userId: true
                     }
                 }
             }

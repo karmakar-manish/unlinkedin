@@ -6,9 +6,9 @@ export interface PostType {
     createdAt: string
 
     Author: {
+        id: number,
         name: string,
         username: string
-        authorId: number,
         profilePicture: string
         headline: string
     }

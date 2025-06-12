@@ -1,6 +1,5 @@
 import { useQuery } from "@tanstack/react-query"
 import { axiosInstance } from "../lib/axios"
-import { toast } from "react-toastify"
 import Sidebar from "../components/Sidebar"
 import PostCreation from "../components/PostCreation"
 import Post from "../components/Post"

@@ -117,7 +117,7 @@ export default function NotificationPage(){
                                     <div className="flex items-start justify-between">
                                         <div className="flex items-center space-x-4">
                                             <Link to={`/profile/${notif.RelatedUser.username}`}>
-                                                <img src={notif.RelatedUser.profilePicture} alt={notif.RelatedUser.name} className="w-12 h-12 rounded-full object-cover"/>
+                                                <img src={notif.RelatedUser.profilePicture || "/avatar.png"} alt={notif.RelatedUser.name} className="w-12 h-12 rounded-full object-cover"/>
                                             </Link>
 
                                             <div>

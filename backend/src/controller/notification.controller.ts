@@ -1,4 +1,3 @@
-import { Response, Request } from "express";
 import { PrismaClient } from "@prisma/client";
 const client = new PrismaClient
 
@@ -22,6 +21,7 @@ export async function getUserNotifications(req:any, res:any){
                 },
                 Post: {
                     select: {
+                        id: true,
                         content: true,
                         image: true
                     }
