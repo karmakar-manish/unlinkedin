@@ -170,10 +170,11 @@ export async function acceptConnectionRequest(req:any, res:any)
 }
 
 
-export async function rejectConnectionRequest(req:any, res:any, next:any)
+export async function rejectConnectionRequest(req:any, res:any)
 {
     const requestId = Number(req.params.requestId)
     const userId = req.user?.id
+    console.log("Request Id : ",requestId);
 
     try{
 
@@ -275,7 +276,8 @@ export async function getUserConnections(req:any, res:any, next: any)
 export async function removeConnection(req:any, res:any, next: any)
 {
     const myId = req.user?.id
-    const userId = Number(req.params)
+    const userId = Number(req.params.userId)
+    console.log("usre : ", req.params)
 
     try{
         await client.userSchema.update({

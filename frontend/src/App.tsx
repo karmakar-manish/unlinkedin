@@ -9,6 +9,7 @@ import { useAuthUserHook } from './hooks/useAuthUserHook'
 import NotificationPage from './pages/auth/NotificationPage'
 import NetworkPage from './pages/auth/NetworkPage'
 import PostPage from './pages/auth/PostPage'
+import ProfilePage from './pages/auth/ProfilePage'
 
 function App() {
 
@@ -33,6 +34,7 @@ function App() {
           <Route path='/notifications' element={authUser ? <NotificationPage/>: <Navigate to={"/login"}/>}/>
           <Route path='/network' element={authUser ? <NetworkPage/> : <Navigate to={"/login"}/>}/>
           <Route path='/post/:postId' element={authUser? <PostPage /> : <Navigate to={"/login"}/>}/>
+          <Route path='/profile/:username' element={authUser? <ProfilePage /> : <Navigate to={"/login"}/>}/>
         </Route>
       </Routes>
         <ToastContainer position="top-right" autoClose={3000} />

@@ -82,7 +82,7 @@ export default function Navbar(){
                                 <span className="text-xs md:block">Notifications</span>
                             </Link>
 
-                            <Link to={`/profile/${authUser}`} className="flex flex-col items-center">
+                            <Link to={`/profile/${authUser.username}`} className="flex flex-col items-center">
                                 <User size={20}/>
                                 <span className="text-xs md:block">Me</span>
                             </Link>

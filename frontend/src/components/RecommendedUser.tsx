@@ -15,7 +15,10 @@ export default function RecommendedUser({user}: UserProps)
     //query function to get the connection status of the user
     const {data: connectionStatus, isLoading} = useQuery({
         queryKey: ["connectionStatus", user.id],
-        queryFn: async ()=> await axiosInstance.get(`/connections/status/${user.id}`)
+        queryFn: async ()=> {
+            const res = await axiosInstance.get(`/connections/status/${user.id}`)
+            return res.data
+        }
     })
 
 
@@ -23,7 +26,7 @@ export default function RecommendedUser({user}: UserProps)
     const {mutate: sendConnectionRequest} = useMutation({
         mutationFn: async(userId: number) => await axiosInstance.post(`/connections/request/${userId}`),
         onSuccess: ()=>{
-            toast.success("Connection request sent successfully.")
+            toast.success("Connection request sent.")
             queryClient.invalidateQueries({queryKey: ["connectionStatus", user.id]})    //get the user connections again
         },
         onError: (error:any)=>{
@@ -68,7 +71,7 @@ export default function RecommendedUser({user}: UserProps)
         {
             return <div className="px-3 py-1 rounded-full bg-gray-100 text-gray-500" >Loading...</div>
         }
-        switch(connectionStatus?.data.status){
+        switch(connectionStatus?.status){
             case "Pending":
                 return (
                     <button className="flex items-center text-sm bg-yellow-500 text-white rounded-full px-3 py-1" disabled>
@@ -80,12 +83,12 @@ export default function RecommendedUser({user}: UserProps)
             case "Received": 
                 return (
                     <div className="flex gap-2 justify-center">
-                        <button onClick={()=>acceptRequest(connectionStatus?.data.requestId)}
+                        <button onClick={()=>acceptRequest(connectionStatus?.requestId)}
                         className="rounded-full p-1 flex items-center justify-center bg-green-500 hover:bg-green-600 text-white cursor-pointer">
                             <Check size={16}/>
                         </button>
                         
-                        <button onClick={()=>rejectRequest(connectionStatus?.data.requestId)}
+                        <button onClick={()=>rejectRequest(connectionStatus?.requestId)}
                         className="bg-red-500 cursor-pointer hover:bg-red-600 rounded-full p-1 text-white flex items-center justify-center">
                             <X size={16}/>
                         </button>
@@ -110,9 +113,7 @@ export default function RecommendedUser({user}: UserProps)
 
     //function to send connection on button click
     function handleConnect(){
-        console.log("Handle connect clicked!")
-        console.log("connection status: ", connectionStatus?.data.status)
-        if(connectionStatus?.data.status === "not_connected")
+        if(connectionStatus?.status === "not_connected")
             sendConnectionRequest(user.id)
     }
 

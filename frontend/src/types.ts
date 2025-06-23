@@ -37,10 +37,32 @@ export interface User {
   username: string
   headline: string
   profilePicture: string
+  location: string
+  about: string
+  skills: string[],
+  
   connections: {
     id: number,
     username: string,
     profilePicture: string,
     headline: string
+  }[]
+
+  experience: {
+    id: number
+    title: string,
+    company: string,
+    startDate: string,
+    endDate: string,
+    description: string,
+    // userId: number
+  }[]
+
+  education: {
+    id: number,
+    school: string,
+    fieldOfStudy: string,
+    startYear: number,
+    endYear: number,
   }[]
 }

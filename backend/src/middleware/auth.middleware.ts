@@ -28,6 +28,26 @@ async function protectRoute(req: any,res: any,next:any)
                         profilePicture: true,
                         headline: true
                     }
+                },
+                experience: {
+                    select: {
+                        id: true,
+                        title : true,
+                        company : true,
+                        startDate : true,
+                        endDate : true,
+                        description : true,
+                    }
+                },
+                education: {
+                    select: {
+                        id: true,
+                        school: true,
+                        fieldOfStudy: true,
+                        startYear: true,
+                        endYear: true,
+                        userId: true
+                    }
                 }
             }
         })

@@ -31,9 +31,6 @@ export default function Post({post}: PostProps)
 
     //check if the current user is the owner of the post
     const isOwner = useMemo(()=>{
-        console.log("Authuser: ", authUser?.id)
-        console.log("Post: ", post.Author?.id)
-
         return Number(authUser?.id) === Number(post.Author?.id)
     }, [authUser?.id, post.Author?.id])
 

@@ -57,6 +57,32 @@ export async function getPublicProfile(req:any, res: any)
         const user = await client.userSchema.findUnique({
             where: {
                 username: username
+            },
+            include: {
+                connections: {
+                    select: {
+                        id: true 
+                    }
+                },
+                experience: {
+                    select: {
+                        id: true,
+                        title : true,
+                        company : true,
+                        startDate : true,
+                        endDate : true,
+                        description : true,
+                    }
+                },
+                education: {
+                    select: {
+                        school: true,
+                        fieldOfStudy: true,
+                        startYear: true,
+                        endYear: true,
+                        userId: true
+                    }
+                }
             }
         })
 
@@ -78,7 +104,6 @@ export async function updateProfile(req:any, res: any)
 {
     const body = req.body
 
-    
     try{
         const currUser = req.user
 
@@ -123,14 +148,39 @@ export async function updateProfile(req:any, res: any)
             where: {
                 id: currUser?.id
             },
-            data: updatedData
+            data: {
+                ...updatedData,
+
+                experience: {
+                    //1. Delete old experiences
+                    deleteMany: {},
+                    
+                    //2. Create new ones
+                    create: body.experience?.map((exp: any)=> ({
+                        title: exp.title,
+                        company: exp.company,
+                        startDate: new Date(exp.startDate),
+                        endDate: new Date(exp.endDate),
+                        description: exp.description,
+                    })) || []
+                },
+                education: {
+                    deleteMany: {},
+                    create: body.education?.map((edu: any)=> ({
+                        school: edu.school,
+                        fieldOfStudy: edu.fieldOfStudy,
+                        startYear: Number(edu.startYear),
+                        endYear: Number(edu.endYear),
+                    })) || []
+                }
+            }
         })
 
         return res.json(updatedUser)
 
-    }catch(err)
+    }catch(err: any)
     {
-        console.log("Error from update Profile route");
+        console.log("Error from update Profile route: ", err);
         return res.status(500).json({message: "Server Error! "})
     }
 }
