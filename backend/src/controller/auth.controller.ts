@@ -65,7 +65,7 @@ export async function signup(req:any, res:any)
             httpOnly: true, //cannot access with javascript (prevent XSS attack)
             path:"/",
             maxAge: 86400,
-            sameSite: "strict",
+            sameSite: "none",   //allows cross-site
             secure: true 
         })
 
@@ -141,7 +141,7 @@ export async function login(req:any, res:any){
         httpOnly: true, //cannot access with javascript (prevent XSS attack)
         path:"/",
         maxAge: 3*24*60*60*1000,
-        sameSite: "strict",
+        sameSite: "none",   //allows cross-site
         secure: true    
     })
 
