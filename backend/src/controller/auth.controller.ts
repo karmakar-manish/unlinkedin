@@ -2,7 +2,7 @@ import express from 'express'
 import bcrypt from "bcryptjs"
 import jwt from "jsonwebtoken"
 import sendWelcomeEmail from "../emails/emailHandlers"
-import zod from "zod"
+import {z} from "zod"
 import { PrismaClient } from "@prisma/client"
 const client = new PrismaClient()
 
@@ -95,9 +95,9 @@ export async function signup(req:any, res:any)
 }
 
 
-const signInSchema = zod.object({
-    username: zod.string().min(1),
-    password: zod.string().min(6)
+const signInSchema = z.object({
+    username: z.string().min(1),
+    password: z.string().min(6)
 })
 
 //login function
