@@ -10,7 +10,7 @@ export default function NetworkPage(){
     const {data: authUser} = useAuthUserHook()
 
     //get all the pending connection requests of the current user
-    const {data: connectionRequests, isLoading: isLoadingConnections} = useQuery({
+    const {data: connectionRequests} = useQuery({
         queryKey: ["connectionRequests"],
         queryFn: async()=>{
             const res = await axiosInstance.get("/connections/requests")

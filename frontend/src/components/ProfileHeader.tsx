@@ -1,6 +1,6 @@
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query"
 import { useEffect, useState } from "react"
-import { useAuthUserHook } from "../hooks/useAuthUserHook"
+// import { useAuthUserHook } from "../hooks/useAuthUserHook"
 import { axiosInstance } from "../lib/axios"
 import { toast } from "react-toastify"
 import { Camera, Clock, MapPin, UserCheck, UserPlus, X } from "lucide-react"
@@ -24,7 +24,7 @@ export default function ProfileHeader({userData, isOwnProfile, onSave}: ProfileH
 
     const queryClient = useQueryClient()
 
-    const {data: authUser} = useAuthUserHook()
+    // const {data: authUser} = useAuthUserHook()
 
     //to fetch the connection status of the user (Pending, Received, not_connected)
     const {data:connectionStatus, refetch: refetchConnectionStatus} = useQuery({
@@ -36,10 +36,10 @@ export default function ProfileHeader({userData, isOwnProfile, onSave}: ProfileH
         enabled: !isOwnProfile  //only enable this if this is my own profile
     })
 
-    //check if the user is connected with the authUser
-    const isConnected = userData?.connections?.some((conn: any) => {
-        return Number(conn.id) === Number(authUser.id)
-    })
+    // //check if the user is connected with the authUser
+    // const isConnected = userData?.connections?.some((conn: any) => {
+    //     return Number(conn.id) === Number(authUser.id)
+    // })
 
     //mutation to send Connection Request to the User
     const {mutate: sendConnectionRequest} = useMutation({

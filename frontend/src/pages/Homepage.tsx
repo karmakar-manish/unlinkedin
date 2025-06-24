@@ -83,7 +83,7 @@ export default function Homepage(){
     const {data: authUser} = useAuthUserHook()
 
     //fetch the recommended user's data from backend api
-    const {data: recommendedUsers, isLoading: isUsersLoading} = useQuery<User[]>({
+    const {data: recommendedUsers} = useQuery<User[]>({
         queryKey: ["recommendedUsers"],
         queryFn: async()=>{
             const res = await axiosInstance.get("/users/suggestions")
