@@ -1,4 +1,4 @@
-import { useState } from "react"
+import { useEffect, useState } from "react"
 import type { User } from "../types"
 import { School, X } from "lucide-react"
 
@@ -28,6 +28,11 @@ export default function EducationSection({userData, isOwnProfile, onSave}: Educa
     const [isEditing, setIsEditing] = useState(false)
 
     const [education, setEducation] = useState<EducationProps[]>(userData.education || [])
+
+    //reload the values on page refresh
+    useEffect(()=>{
+        setEducation(userData.education)
+    }, [userData])
 
     const [newEducation, setNewEducation] = useState<NewEducationProps>({
         school: "",

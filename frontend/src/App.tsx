@@ -19,7 +19,10 @@ function App() {
   //for showing the loading screen
   if(isLoading)
   {
-    return <div>Loading....</div>
+    return <div className='flex flex-col items-center justify-center h-screen'>
+      <p className='text-lg font-medium'>Waking up server...</p>
+      <p className='text-sm text-gray-500 mt-2'>This may take a few seconds ⌛</p>
+    </div>
   }
 
   

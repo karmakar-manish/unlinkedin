@@ -12,7 +12,7 @@ import connectionRoutes  from "./routes/connection.route";
 dotenv.config()	//for loading the env variables
 
 const app = express()
-const port = process.env.PORT || 5000
+const port = process.env.PORT || 3000
 
 app.use(cookieParser())
 app.use(express.json({ limit: "10mb"}))	//the size of the image in the body

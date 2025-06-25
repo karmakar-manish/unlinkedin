@@ -1,6 +1,6 @@
 import { X } from "lucide-react"
 import type { User } from "../types"
-import { useState } from "react"
+import { useEffect, useState } from "react"
 
 interface SkillSectionProps {
     userData: User,
@@ -10,11 +10,16 @@ interface SkillSectionProps {
 
 
 export default function SkillSection({userData, isOwnProfile, onSave}: SkillSectionProps){
-   0
+   
     const [isEditing, setIsEditing] = useState(false)
     const [skills, setSkills] = useState<string[]>(userData.skills || [])
     const [newSkill, setNewSkill] = useState("")
 
+    //reload the values on page refresh
+    useEffect(()=>{
+        setSkills(userData.skills)
+    }, [userData])
+    
     //function to add a new skill
     function handleAddSkill(){
         //only if the new skill is not present in Skills array
