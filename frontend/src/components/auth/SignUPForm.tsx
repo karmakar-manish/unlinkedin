@@ -3,7 +3,7 @@ import TextInputComponent from "../TextInputComponent"
 import { useMutation, useQueryClient } from "@tanstack/react-query"
 import { axiosInstance } from "../../lib/axios"
 import { toast } from "react-toastify"
-import {Edit, Edit2, Eye, EyeClosed, Loader, Pencil, RefreshCcw, Repeat, Replace, RotateCcw, SwatchBook} from "lucide-react"
+import {Eye, EyeClosed, Loader, RefreshCcw} from "lucide-react"
 import { auth, provider } from "../../firebase"
 import { signInWithPopup } from "firebase/auth"
 
