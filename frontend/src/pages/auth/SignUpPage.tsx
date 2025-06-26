@@ -5,8 +5,8 @@ export default function SignUpPage(){
 
     return <div className="min-h-screen flex flex-col justify-center py-12 sm:px-6 lg:px-8">
         <div className=" sm:mx-auto sm:w-full sm:max-w-md">
-            <img className=" mx-auto w-auto h-30" src="/logo.svg" alt="UnlinkedIn"/>
-            <h2 className="text-center text-3xl font-extrabold text-gray-900">
+            <img className=" mx-auto h-20 w-auto rounded mb-3" src="/unlinkedInLogo.png" alt="UnlinkedIn"/>
+            <h2 className="text-center text-3xl font-extrabold text-gray-800">
                 Make the most of your professional life
             </h2>
         </div> 
@@ -25,7 +25,8 @@ export default function SignUpPage(){
                         </div>
                     </div>
                     <div className="mt-6">
-                        <Link to="/login" className="w-full border flex justify-center py-2 px-4 border-transparent rounded-md shadow-sm text-sm font-medium text-blue-600 bg-white hover:bg-gray-50">
+                        <Link to="/login" className="w-full border flex justify-center py-2 px-4 
+                        border-transparent rounded-md shadow-sm text-sm font-medium text-blue-600 bg-white hover:bg-gray-50">
                             Sign in
                         </Link>
                     </div>

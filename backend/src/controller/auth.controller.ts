@@ -11,7 +11,7 @@ const router = express.Router()
 //Signup function
 export async function signup(req:any, res:any)
 {
-    const {name, email, password, username} = req.body
+    const {name, email, password, username, uid} = req.body
 
     if(!name || !email || !password || !username)
         return res.status(400).json({message:"All fields are required!"})
@@ -51,7 +51,8 @@ export async function signup(req:any, res:any)
                 name: name,
                 email: email,
                 password: hashedPassword,
-                username: username
+                username: username,
+                uid: uid
             }
         })
 
@@ -150,6 +151,52 @@ export async function login(req:any, res:any){
     })
 }
 
+const providerLoginInSchema = z.object({
+    uid: z.string()
+})
+
+//login using google provider
+export async function providerLogin(req:any, res:any){
+    //get the uid from the body
+    const body = req.body
+    const response = providerLoginInSchema.safeParse(body)
+    
+    //incase of no success
+    if(!response.success)
+    {
+        return res.status(400).json({message: "Incorrect email address"})
+    }
+
+    //find the user with the given uid in database
+    const user = await client.userSchema.findFirst({
+        where:{
+            uid: body.uid
+        }
+    })
+
+    //incase of no user found
+    if(!user)
+    {
+        return res.status(400).json({message:"No account found. Signup instead"})
+    }
+
+    const JWT_SECRET = process.env.JWT_SECRET || ""
+    //create the jwt token
+    const token = jwt.sign({id: user?.id}, JWT_SECRET, {expiresIn: "3d"})
+
+    //create a cookie
+    res.cookie("token", token, {
+        httpOnly: true, //cannot access with javascript (prevent XSS attack)
+        path:"/",
+        maxAge: 3*24*60*60*1000,
+        sameSite: "none",   //allows cross-site
+        secure: true    
+    })
+
+    return res.json({
+        message: "Logged in successfully!"
+    })
+}
 
 //logout function
 export function logout(req:any, res:any){

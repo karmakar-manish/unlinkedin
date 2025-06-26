@@ -19,6 +19,7 @@ model UserSchema {
   username       String   @unique
   email          String   @unique
   password       String
+  uid            String?
   profilePicture String   @default("")
   bannerImg      String   @default("")
   headline       String   @default("Linkedin User")
@@ -66,15 +67,15 @@ model Education {
 }
 
 model PostSchema {
-  id        Int        @id @default(autoincrement())
-  
-  authorId  Int
-  Author    UserSchema @relation("AuthorPosts", fields: [authorId], references: [id])
+  id Int @id @default(autoincrement())
+
+  authorId Int
+  Author   UserSchema @relation("AuthorPosts", fields: [authorId], references: [id])
 
   content   String
   image     String?
-  createdAt DateTime   @default(now())
-  updatedAt DateTime   @updatedAt
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 
   comments Comment[]
   likes    PostLikes[]
@@ -135,7 +136,6 @@ enum ConnectionStatus {
   accepted
   rejected
 }
-
 
 model connectionRequest {
   id         Int              @id @default(autoincrement())

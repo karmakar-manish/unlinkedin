@@ -30,6 +30,8 @@ export default function LoginForm()
         }
     })
 
+
+    //button function for username, password login
     async function handleLogin(e: any)
     {
         e.preventDefault()
@@ -43,8 +45,8 @@ export default function LoginForm()
         <TextInputComponent placeholder="Username" onChange={(e)=>setUsername(e)} value={username}/>
 
         <div className="relative w-full max-w-md">
-
-            <input placeholder="Password (6+ characters)" type={showpassword?"text":"password"} 
+            
+            <input placeholder="Password" type={showpassword?"text":"password"} 
             onChange={(e)=>setPassword(e.target.value)} value={password} 
             className="border bg-gray-50 border-gray-300 text-gray-900 text-sm block rounded-lg p-2.5 mb-2 
             w-full focus:outline-none focus:ring-2 focus:ring-gray-500"/>
@@ -60,6 +62,6 @@ export default function LoginForm()
          bg-blue-600 hover:bg-blue-700 font-semibold rounded-lg text-sm px-5 py-2.5 me-2 mb-2 mt-2 w-full"
          type="submit" disabled={isPending}>
             {isPending? <Loader className="animate-spin w-5 h-5 mx-auto"/>: "Sign in"}
-         </button>
+        </button>
     </form>
 }
