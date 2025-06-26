@@ -19,7 +19,7 @@ model UserSchema {
   username       String   @unique
   email          String   @unique
   password       String
-  uid            String?
+  uid            String?  @unique
   profilePicture String   @default("")
   bannerImg      String   @default("")
   headline       String   @default("Linkedin User")
