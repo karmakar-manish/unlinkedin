@@ -80,7 +80,7 @@ export default function EducationSection({userData, isOwnProfile, onSave}: Educa
     }
 
 
-    return <div className="bg-white shadow rounded-lg p-6 mb-6">
+    return <div className="bg-gray-100 shadow rounded-lg p-6 mb-6">
         <h2 className="text-xl font-semibold mb-4">Education section</h2>
         {education.map((edu)=>(
             <div key={edu.id} className="mb-4 flex justify-between items-start">

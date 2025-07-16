@@ -56,7 +56,7 @@ export default function ProfilePage(){
         updateProfile(updatedData)
     }
     
-    return <div className="max-w-4xl mx-auto p-10">
+    return <div className="max-w-4xl mx-auto p-10 ">
         <ProfileHeader userData={userData} isOwnProfile={isOwnProfile} onSave={handleSave}/>
         <AboutSection userData={userData} isOwnProfile={isOwnProfile} onSave={handleSave}/>
         <ExperienceSection userData={userData} isOwnProfile={isOwnProfile} onSave={handleSave}/>

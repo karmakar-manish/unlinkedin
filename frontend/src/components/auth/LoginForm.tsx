@@ -40,7 +40,7 @@ export default function LoginForm()
     }
 
 
-    return <form onSubmit={handleLogin}>
+    return <form onSubmit={handleLogin} >
 
         <TextInputComponent placeholder="Username" onChange={(e)=>setUsername(e)} value={username}/>
 

@@ -104,7 +104,7 @@ export default function NotificationPage(){
         </div>
 
         <div className="col-span-1 lg:col-span-3">
-            <div className="bg-white rounded-lg shadow p-6">
+            <div className="bg-gray-100 rounded-lg shadow p-6">
                 <h1 className="text-2xl font-bold mb-6">Notifications</h1>
 
                 {isNotificationsLoading ? (

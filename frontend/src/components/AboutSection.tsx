@@ -24,7 +24,7 @@ export default function AboutSection({userData, isOwnProfile, onSave}: AboutSect
     }
 
 
-    return <div className="bg-white shadow rounded-lg p-6 mb-6">
+    return <div className="bg-gray-100 shadow rounded-lg p-6 mb-6">
         <h2 className="text-xl font-semibold mb-4">About</h2>
 
         {isOwnProfile && (

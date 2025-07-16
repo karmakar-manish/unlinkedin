@@ -36,7 +36,7 @@ export default function SkillSection({userData, isOwnProfile, onSave}: SkillSect
         setIsEditing(false)
     }
 
-    return <div className="bg-white shadow rounded-lg p-6 mb-6">
+    return <div className="bg-gray-100 shadow rounded-lg p-6 mb-6">
         <h2 className="text-xl font-semibold mb-4">Skills</h2>
         <div className="flex flex-wrap">
             {skills.map((skill, index) => (

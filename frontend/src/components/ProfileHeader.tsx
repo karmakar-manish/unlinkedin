@@ -174,7 +174,7 @@ export default function ProfileHeader({userData, isOwnProfile, onSave}: ProfileH
         {/* {(isOwnProfile?<div>Own</div>: <div>Other</div>)}
         {userData.username}
         {renderConnectionButton()} */}
-        <div className="bg-white shadow rounded-lg mb-6">
+        <div className="bg-gray-100 shadow rounded-lg mb-6">
             <div className="relative h-48 rounded-t-lg bg-cover bg-center" 
             style={{backgroundImage: `url("${editedData.bannerImg || userData.bannerImg || "/banner.png"}")`}}>
                 {isEditing && (

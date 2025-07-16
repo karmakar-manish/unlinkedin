@@ -11,7 +11,7 @@ export default function SignUpPage(){
             </h2>
         </div> 
         <div className="mt-8 sm:mx-auto sm:w-sm sm:max-w-xl shadow-md">
-            <div className="bg-white py-8 px-4 shadow sm:rounded-lg sm:px-10">
+            <div className="bg-gray-100 py-8 px-4 shadow sm:rounded-lg sm:px-10">
                 
                 <SignUPForm/>   
                 
@@ -21,7 +21,7 @@ export default function SignUpPage(){
                             <div className="w-full border-t border-gray-300"></div>
                         </div>
                         <div className="relative flex justify-center text-sm">
-                            <span className="px-2 bg-white text-gray-500">Already on UnlinkedIn?</span>
+                            <span className="px-2 bg-gray-100 text-gray-500">Already on UnlinkedIn?</span>
                         </div>
                     </div>
                     <div className="mt-6">
