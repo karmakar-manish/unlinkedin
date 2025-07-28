@@ -7,6 +7,7 @@ import {Eye, EyeClosed, Loader, Lock, Mail, RefreshCcw, User, UserPen} from "luc
 import { auth, provider } from "../../firebase"
 import { signInWithPopup } from "firebase/auth"
 import Input from "../Input"
+import PasswordStrengthMeter from "../PasswordStrengthMeter"
 
 export default function SignUPForm(){
     const [name, setName] = useState("")
@@ -142,9 +143,13 @@ export default function SignUPForm(){
             </button>
 
         </div>
+        
+        {/* Password strength meter  */}
+        <PasswordStrengthMeter password={password}/>
+
 
         <motion.button
-            className='mt-3 w-full py-3 px-4 bg-gradient-to-r from-blue-500 to-indigo-600 text-white 
+            className='mt-8 w-full py-3 px-4 bg-gradient-to-r from-blue-500 to-indigo-600 text-white 
             font-bold rounded-lg shadow-lg hover:from-blue-600
             hover:to-indigo-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2
                 focus:ring-offset-gray-900 transition duration-200 cursor-pointer'
