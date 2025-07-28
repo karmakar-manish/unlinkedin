@@ -1,9 +1,10 @@
+import {motion} from "framer-motion"
 import { useMutation, useQueryClient } from "@tanstack/react-query"
 import { useState } from "react"
 import { axiosInstance } from "../../lib/axios"
 import { toast } from "react-toastify"
-import TextInputComponent from "../TextInputComponent"
-import { Eye, EyeClosed, Loader } from "lucide-react"
+import { Eye, EyeClosed, Loader, Lock, User } from "lucide-react"
+import Input from "../Input"
 
 export default function LoginForm()
 {
@@ -42,26 +43,42 @@ export default function LoginForm()
 
     return <form onSubmit={handleLogin} >
 
-        <TextInputComponent placeholder="Username" onChange={(e)=>setUsername(e)} value={username}/>
+        <Input
+        icon={User}
+        type="text"
+        placeholder="Username"
+        value={username}
+        onChange={(e)=>setUsername(e.target.value)}
+        />
+        {/* <TextInputComponent placeholder="Username" onChange={(e)=>setUsername(e)} value={username}/> */}
 
         <div className="relative w-full max-w-md">
-            
-            <input placeholder="Password" type={showpassword?"text":"password"} 
-            onChange={(e)=>setPassword(e.target.value)} value={password} 
-            className="border bg-gray-50 border-gray-300 text-gray-900 text-sm block rounded-lg p-2.5 mb-2 
-            w-full focus:outline-none focus:ring-2 focus:ring-gray-500"/>
+            <Input
+            icon={Lock}
+            type={showpassword? "text" : "password"}
+            placeholder="Password"
+            value={password}
+            onChange={(e)=>setPassword(e.target.value)}
+            />
 
             <button type="button" onClick={()=>setShowpassword((prev) => !prev)} 
-            className="absolute top-3 right-3 text-gray-600 cursor-pointer hover:text-gray-500">
-                {showpassword?<EyeClosed/>:<Eye/>}
+            className="absolute top-2.5 right-3 text-gray-600 cursor-pointer hover:text-gray-500">
+                {showpassword?<EyeClosed size={20}/>:<Eye size={20}/>}
             </button>
 
         </div>
 
-        <button className="cursor-pointer text-white
-         bg-blue-600 hover:bg-blue-700 font-semibold rounded-lg text-sm px-5 py-2.5 me-2 mb-2 mt-2 w-full"
-         type="submit" disabled={isPending}>
-            {isPending? <Loader className="animate-spin w-5 h-5 mx-auto"/>: "Sign in"}
-        </button>
+        <motion.button
+            className='mt-3 w-full py-3 px-4 bg-gradient-to-r from-blue-500 to-indigo-600 text-white 
+            font-bold rounded-lg shadow-lg hover:from-blue-600
+            hover:to-indigo-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2
+                focus:ring-offset-gray-900 transition duration-200 cursor-pointer'
+            whileHover={{ scale: 1.02 }}
+            whileTap={{ scale: 0.98 }}
+            type='submit'
+            disabled={isPending}
+        >
+                {isPending ? <Loader className="animate-spin m-auto" /> : "Sign in"}
+        </motion.button>
     </form>
 }

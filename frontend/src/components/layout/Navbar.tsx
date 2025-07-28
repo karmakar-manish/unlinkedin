@@ -46,17 +46,18 @@ export default function Navbar(){
     //get the connection request count
     const unreadConnectionRequestsCount = connectionRequests?.length 
 
-    return <div className="bg-blue-100 shadow-md sticky top-0 z-50">
-        <div className="max-w-7xl mx-auto px-4">
-            <div className="flex justify-between py-3">
-                <div className="flex items-center space-x-4">
-                    <Link to={"/"}>
-                        <img className="h-8 rounded" src="/small-logo.png" alt="linkedIn_Logo" />
-                    </Link>
-                </div>
-                <div className="flex items-center gap-2 md:gap-6">
-                    {authUser? (
-                        <>
+    return <div>
+        { authUser? (
+            <div className="bg-blue-100 shadow-md sticky top-0 z-50">
+                <div className="max-w-7xl mx-auto px-4">
+                    <div className="py-3 flex justify-between">
+                         
+                        <div className="flex items-center space-x-4">
+                            <Link to={"/"}>
+                                <img className="h-8 rounded" src="/small-logo.png" alt="linkedIn_Logo" />
+                            </Link>
+                        </div>
+                        <div className="flex items-center gap-2 md:gap-6">
                             <Link to={"/"} className="flex flex-col items-center">
                                 <Home size={20}/>
                                 <span className="text-xs md:block">Home</span>
@@ -91,20 +92,22 @@ export default function Navbar(){
                                 <LogOut size={20}/>
                                 <span className="text-xs md:block">Logout</span>
                             </button>
-                        </>
-                    ): (
-                        <>
-                            <Link to={"/login"} className="text-sm text-gray-700 hover:text-gray-900 flex flex-col items-center rounded p-2 ">
-                                Sign In
-                            </Link>
-                            <Link to={"/signup"} className="text-xs font-sans text-white bg-blue-600 hover:bg-blue-700 p-2 rounded flex flex-col items-center">
-                                Join now
-                            </Link>
-                        </>
-                    )}
+                            </div>
+                        </div>
+                    </div>
                 </div>
-            </div>
-        </div>
-       
+            // </div> 
+        ): (
+                        null
+                        // <>
+                        //     <Link to={"/login"} className="text-sm text-gray-700 hover:text-gray-900 flex flex-col items-center rounded p-2 ">
+                        //         Sign In
+                        //     </Link>
+                        //     <Link to={"/signup"} className="text-xs font-sans text-white bg-blue-600 hover:bg-blue-700 p-2 rounded flex flex-col items-center">
+                        //         Join now
+                        //     </Link>
+                        // </>
+            )
+        }
     </div>
 }

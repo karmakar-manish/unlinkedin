@@ -1,11 +1,12 @@
 import { useState } from "react"
-import TextInputComponent from "../TextInputComponent"
+import {motion} from "framer-motion"
 import { useMutation, useQueryClient } from "@tanstack/react-query"
 import { axiosInstance } from "../../lib/axios"
 import { toast } from "react-toastify"
-import {Eye, EyeClosed, Loader, RefreshCcw} from "lucide-react"
+import {Eye, EyeClosed, Loader, Lock, Mail, RefreshCcw, User, UserPen} from "lucide-react"
 import { auth, provider } from "../../firebase"
 import { signInWithPopup } from "firebase/auth"
+import Input from "../Input"
 
 export default function SignUPForm(){
     const [name, setName] = useState("")
@@ -69,15 +70,31 @@ export default function SignUPForm(){
     }
 
     return <form onSubmit={handleSignup}>
-        <TextInputComponent placeholder="Full name" onChange={(e)=>setName(e)} value={name}/>
+        
+        <Input
+            icon={User}
+            type="text"
+            placeholder="Full Name"
+            value={name}
+            onChange={(e)=>setName(e.target.value)}
+        />
 
-        <TextInputComponent placeholder="Username" onChange={(e)=>setUsername(e)} value={username}/>
+        <Input
+            icon={UserPen}
+            type="text"
+            placeholder="Username"
+            value={username}
+            onChange={(e)=>setUsername(e.target.value)}
+        />
+        {/* <TextInputComponent placeholder="Full name" onChange={(e)=>setName(e)} value={name}/>
+
+        <TextInputComponent placeholder="Username" onChange={(e)=>setUsername(e)} value={username}/> */}
 
 
         {!uid  ? (
             <button className="cursor-pointer text-gray-700 bg-gray-200 hover:bg-gray-300 
-            focus:outline-none focus:ring-4 focus:ring-gray-300 font-bold rounded-lg text-sm 
-            px-5 py-2.5 mb-2 w-full border border-[#585555f0]"
+           border-blue-300 focus:border-blue-200 focus:ring-3 focus:ring-blue-200 font-bold rounded-lg text-sm 
+            px-5 py-2.5 w-full border"
             onClick={handleProviderEmail} disabled={isGettingUid}>
             {
                 isGettingUid ? <Loader className="animate-spin w-5 h-5 mx-auto"/> : (
@@ -90,41 +107,60 @@ export default function SignUPForm(){
             </button>
         ):(
             <div className="relative">
-                <input type="text" placeholder={email} readOnly={true}
-                className="border bg-gray-50 border-gray-300 text-gray-900 
-                text-sm block rounded-lg p-2.5 mb-2 w-full focus:outline-none 
-                focus:ring-2 focus:ring-gray-500"/>
+                
+                <Input
+                    icon={Mail}
+                    type="text"
+                    placeholder={email}
+                    readOnly={true}
+                />
 
-                <button className="absolute top-3 right-3 text-gray-600 cursor-pointer"
+                <button className="absolute top-2.5 right-3 text-gray-600 cursor-pointer"
                 onClick={()=>{
                     setEmail("")
                     setUid("")
                 }}>
-                    <RefreshCcw />
+                    <RefreshCcw size={20}/>
                 </button>
             </div>
             
         )}
         
-        <div className="relative w-full">
+        <div className="relative w-full mt-4">
 
-            <input placeholder="Password (6+ characters)" type={showpassword?"text":"password"} 
-            onChange={(e)=>setPassword(e.target.value)} value={password} 
-            className="border bg-gray-50 border-gray-300 text-gray-900 text-sm block rounded-lg p-2.5 mb-2 
-            w-full focus:outline-none focus:ring-2 focus:ring-gray-500"/>
+            <Input
+            icon={Lock}
+            type={showpassword? "text" : "password"}
+            placeholder="Password"
+            value={password}
+            onChange={(e)=>setPassword(e.target.value)}
+            />
 
             <button type="button" onClick={()=>setShowpassword((prev) => !prev)} 
-            className="absolute top-3 right-3 text-gray-600 cursor-pointer hover:text-gray-500">
-                {showpassword?<EyeClosed/>:<Eye/>}
+            className="absolute top-2.5 right-3 text-gray-600 cursor-pointer hover:text-gray-500">
+                {showpassword?<EyeClosed size={20}/>:<Eye size={20}/>}
             </button>
 
         </div>
 
-        <button className="cursor-pointer text-white
-         bg-blue-600 hover:bg-blue-700 font-semibold rounded-lg text-sm px-5 py-2.5 me-2 mb-2 mt-2 w-full"
+        <motion.button
+            className='mt-3 w-full py-3 px-4 bg-gradient-to-r from-blue-500 to-indigo-600 text-white 
+            font-bold rounded-lg shadow-lg hover:from-blue-600
+            hover:to-indigo-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2
+                focus:ring-offset-gray-900 transition duration-200 cursor-pointer'
+            whileHover={{ scale: 1.02 }}
+            whileTap={{ scale: 0.98 }}
+            type='submit'
+            disabled={isPending}
+        >
+                {isPending ? <Loader className="animate-spin m-auto" /> : "Agree & Join"}
+        </motion.button>
+
+        {/* <button className="cursor-pointer text-white
+         bg-blue-600 hover:bg-blue-700 font-semibold rounded-lg text-sm px-5 py-2.5 me-2 mt-2 w-full"
          type="submit" disabled={isPending}>
             {isPending? <Loader className="animate-spin w-5 h-5 mx-auto"/>: "Agree & Join"}
-         </button>
+         </button> */}
     </form>
 }
 

@@ -90,7 +90,7 @@ export async function signup(req:any, res:any)
             token: token
         })
     } catch (err) {
-        console.log("Error from signup route: ", err);
+        // console.log("Error from signup route: ", err);
         return res.status(500).json({message: "Internal server error"})
     }
 }
