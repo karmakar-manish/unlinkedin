@@ -5,6 +5,7 @@ A full-stack social media platform clone, built to showcase skills in modern web
 ## 🚀 Live Demo
 
 [Check out the live application here!](https://unlinkediin.netlify.app/login)
+(Since the backend is hosted on free Render server, it may take few seconds to start for the first time).
 
 ## ✨ Features
 
@@ -107,10 +108,4 @@ Follow these instructions to set up the project locally on your machine.
 
 The application should now be running on `http://localhost:5173` (or similar).
 
-## 👨‍💻 Author
 
-- **[Your Name]** - [Your GitHub Profile](https://github.com/[your-github-username])
-
-## 📜 License
-
-This project is licensed under the ISC License - see the [LICENSE.md](https://github.com/[your-github-username]/[your-repo-name]/blob/main/LICENSE) file for details.
